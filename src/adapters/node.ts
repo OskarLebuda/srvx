@@ -79,6 +79,7 @@ class NodeServer implements Server {
         req: nodeReq,
         res: nodeRes,
         maxRequestBodySize: this.options.maxRequestBodySize,
+        trustProxy: this.options.trustProxy,
       });
       request.waitUntil = this.#wait?.waitUntil;
       const res = fetchHandler(request);
@@ -111,7 +112,7 @@ class NodeServer implements Server {
       port,
       host,
       exclusive: !this.options.reusePort,
-      ...(tls ? { cert: tls.cert, key: tls.key, passphrase: tls.passphrase } : {}),
+      ...tls,
       ...this.options.node,
     };
 
